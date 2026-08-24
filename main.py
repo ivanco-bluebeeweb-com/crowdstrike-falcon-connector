@@ -9,6 +9,6 @@ import handlers_rtr_audit  # noqa: F401
 import panels  # noqa: F401
 import panels_center  # noqa: F401
 import panels_settings  # noqa: F401
-from app import ext
+from app import ext, chat  # noqa: F401
 
 extension = ext
