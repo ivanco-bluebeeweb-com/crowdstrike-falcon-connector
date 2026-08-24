@@ -1,0 +1,4050 @@
+{
+  "manifest_schema_version": 3,
+  "sdk_version": "5.11.0",
+  "app_id": "crowdstrike-falcon-connector",
+  "version": "0.1.0",
+  "name": "CrowdStrike Falcon",
+  "description": "Connect your own CrowdStrike Falcon tenant (OAuth2 API Client) to manage Hosts, Detections, Alerts, Incidents, custom IOCs, Prevention Policies, and Real Time Response sessions across your endpoint fleet.",
+  "icon": "icon.svg",
+  "actions_explicit": true,
+  "system": false,
+  "capabilities": [
+    "crowdstrike:read",
+    "crowdstrike:write"
+  ],
+  "tools": [
+    {
+      "name": "connect_crowdstrike",
+      "description": "Connect your own CrowdStrike Falcon tenant by saving its cloud region and an OAuth2 API Client (Client ID + Secret), after checking they actually work.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.provider.connected"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "label": {
+            "default": "",
+            "description": "Friendly tenant label, e.g. 'Acme SOC'.",
+            "title": "Label",
+            "type": "string"
+          },
+          "region": {
+            "description": "Falcon cloud region: 'us-1', 'us-2', 'eu-1', or 'us-gov-1'.",
+            "title": "Region",
+            "type": "string"
+          },
+          "client_id": {
+            "description": "OAuth2 API Client ID from Falcon Console > Support and resources > API Clients and Keys.",
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "description": "OAuth2 API Client Secret.",
+            "title": "Client Secret",
+            "type": "string"
+          }
+        },
+        "required": [
+          "region",
+          "client_id",
+          "client_secret"
+        ],
+        "title": "ConnectCrowdstrikeParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "connection_id": {
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "client_id_masked": {
+            "title": "Client Id Masked",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "connection_id",
+          "label",
+          "region",
+          "client_id_masked"
+        ],
+        "title": "CrowdstrikeConnection",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.connect_crowdstrike",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "disconnect_crowdstrike",
+      "description": "Disconnect a CrowdStrike Falcon tenant: deletes the saved OAuth2 Client ID/Secret. Nothing in CrowdStrike itself is changed.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.provider.disconnected"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "description": "Saved Falcon tenant connection ID to remove from Imperal.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "connection_id"
+        ],
+        "title": "DisconnectCrowdstrikeParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.disconnect_crowdstrike",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_connections",
+      "description": "List the connected CrowdStrike Falcon tenants (region + masked Client ID).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {},
+        "title": "NoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "CrowdstrikeConnection": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "connection_id": {
+                "title": "Connection Id",
+                "type": "string"
+              },
+              "label": {
+                "title": "Label",
+                "type": "string"
+              },
+              "region": {
+                "title": "Region",
+                "type": "string"
+              },
+              "client_id_masked": {
+                "title": "Client Id Masked",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "connection_id",
+              "label",
+              "region",
+              "client_id_masked"
+            ],
+            "title": "CrowdstrikeConnection",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "connections": {
+            "items": {
+              "$ref": "#/$defs/CrowdstrikeConnection"
+            },
+            "title": "Connections",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "connections"
+        ],
+        "title": "ConnectionList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_connections",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_hosts",
+      "description": "List endpoints (hosts/sensors) in the connected Falcon tenant, optionally filtered by an FQL expression.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "filter_expr": {
+            "default": "",
+            "description": "Optional FQL filter, e.g. \"platform_name:'Windows'\".",
+            "title": "Filter Expr",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max hosts to return (1-500).",
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "ListHostsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "FalconHost": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "host_id": {
+                "title": "Host Id",
+                "type": "string"
+              },
+              "hostname": {
+                "title": "Hostname",
+                "type": "string"
+              },
+              "platform_name": {
+                "title": "Platform Name",
+                "type": "string"
+              },
+              "os_version": {
+                "title": "Os Version",
+                "type": "string"
+              },
+              "last_seen": {
+                "title": "Last Seen",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "status",
+              "host_id",
+              "hostname",
+              "platform_name",
+              "os_version",
+              "last_seen"
+            ],
+            "title": "FalconHost",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "hosts": {
+            "items": {
+              "$ref": "#/$defs/FalconHost"
+            },
+            "title": "Hosts",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "hosts"
+        ],
+        "title": "HostList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_hosts",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "get_host",
+      "description": "Read one endpoint (host/sensor) in full by its Falcon device id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "host_id": {
+            "description": "Falcon host (device/agent) id.",
+            "title": "Host Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host_id"
+        ],
+        "title": "HostIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "host_id": {
+            "title": "Host Id",
+            "type": "string"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "platform_name": {
+            "title": "Platform Name",
+            "type": "string"
+          },
+          "os_version": {
+            "title": "Os Version",
+            "type": "string"
+          },
+          "last_seen": {
+            "title": "Last Seen",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status",
+          "host_id",
+          "hostname",
+          "platform_name",
+          "os_version",
+          "last_seen"
+        ],
+        "title": "FalconHost",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.get_host",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "contain_hosts",
+      "description": "Network-contain one or more hosts -- isolates them from the network except for traffic to the Falcon cloud. The core incident-response 'stop the bleeding' action.",
+      "action_type": "destructive",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.host.contained"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "host_ids": {
+            "description": "One or more Falcon host ids to act on.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Host Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "host_ids"
+        ],
+        "title": "HostActionParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.contain_hosts",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "lift_containment",
+      "description": "Lift network containment on one or more hosts, restoring normal network access.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.host.contained"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "host_ids": {
+            "description": "One or more Falcon host ids to act on.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Host Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "host_ids"
+        ],
+        "title": "HostActionParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.lift_containment",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "hide_hosts",
+      "description": "Hide one or more hosts from the Falcon console (does not uninstall the sensor).",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.host.hidden"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "host_ids": {
+            "description": "One or more Falcon host ids to act on.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Host Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "host_ids"
+        ],
+        "title": "HostActionParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.hide_hosts",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "unhide_hosts",
+      "description": "Unhide one or more previously hidden hosts.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.host.unhidden"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "host_ids": {
+            "description": "One or more Falcon host ids to act on.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Host Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "host_ids"
+        ],
+        "title": "HostActionParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.unhide_hosts",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_detections",
+      "description": "List sensor-visibility Detections in the connected Falcon tenant, optionally filtered by an FQL expression (e.g. \"status:'new'\").",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "filter_expr": {
+            "default": "",
+            "description": "Optional FQL filter, e.g. \"status:'new'\".",
+            "title": "Filter Expr",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max detections to return (1-500).",
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "ListDetectionsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "FalconDetection": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "detection_id": {
+                "title": "Detection Id",
+                "type": "string"
+              },
+              "hostname": {
+                "title": "Hostname",
+                "type": "string"
+              },
+              "severity": {
+                "title": "Severity",
+                "type": "string"
+              },
+              "tactic": {
+                "title": "Tactic",
+                "type": "string"
+              },
+              "technique": {
+                "title": "Technique",
+                "type": "string"
+              },
+              "created": {
+                "title": "Created",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "status",
+              "detection_id",
+              "hostname",
+              "severity",
+              "tactic",
+              "technique",
+              "created"
+            ],
+            "title": "FalconDetection",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "detections": {
+            "items": {
+              "$ref": "#/$defs/FalconDetection"
+            },
+            "title": "Detections",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "detections"
+        ],
+        "title": "DetectionList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_detections",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "get_detection",
+      "description": "Read one Detection in full by its detection id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "detection_id": {
+            "description": "Falcon detection id.",
+            "title": "Detection Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detection_id"
+        ],
+        "title": "DetectionIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "detection_id": {
+            "title": "Detection Id",
+            "type": "string"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          },
+          "tactic": {
+            "title": "Tactic",
+            "type": "string"
+          },
+          "technique": {
+            "title": "Technique",
+            "type": "string"
+          },
+          "created": {
+            "title": "Created",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status",
+          "detection_id",
+          "hostname",
+          "severity",
+          "tactic",
+          "technique",
+          "created"
+        ],
+        "title": "FalconDetection",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.get_detection",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "update_detection_status",
+      "description": "Update a Detection's triage status (new/in_progress/true_positive/false_positive/ignored), optionally with a comment and/or assignee.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.detection.updated"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "detection_id": {
+            "description": "Falcon detection id.",
+            "title": "Detection Id",
+            "type": "string"
+          },
+          "status": {
+            "description": "New status: 'new', 'in_progress', 'true_positive', 'false_positive', or 'ignored'.",
+            "title": "Status",
+            "type": "string"
+          },
+          "comment": {
+            "default": "",
+            "description": "Optional analyst comment to attach.",
+            "title": "Comment",
+            "type": "string"
+          },
+          "assign_to_uuid": {
+            "default": "",
+            "description": "Optional Falcon user UUID to assign the detection to.",
+            "title": "Assign To Uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detection_id",
+          "status"
+        ],
+        "title": "UpdateDetectionStatusParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.update_detection_status",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_incidents",
+      "description": "List correlated Incidents (CrowdScore groupings of related detections) in the connected Falcon tenant.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "filter_expr": {
+            "default": "",
+            "description": "Optional FQL filter, e.g. \"state:'open'\".",
+            "title": "Filter Expr",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max incidents to return (1-500).",
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "ListIncidentsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "FalconIncident": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "incident_id": {
+                "title": "Incident Id",
+                "type": "string"
+              },
+              "state": {
+                "title": "State",
+                "type": "string"
+              },
+              "fine_score": {
+                "title": "Fine Score",
+                "type": "integer"
+              },
+              "hosts_count": {
+                "title": "Hosts Count",
+                "type": "integer"
+              },
+              "created": {
+                "title": "Created",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "status",
+              "incident_id",
+              "state",
+              "fine_score",
+              "hosts_count",
+              "created"
+            ],
+            "title": "FalconIncident",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/$defs/FalconIncident"
+            },
+            "title": "Incidents",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "incidents"
+        ],
+        "title": "IncidentList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_incidents",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "get_incident",
+      "description": "Read one Incident in full by its incident id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "incident_id": {
+            "description": "Falcon incident id.",
+            "title": "Incident Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id"
+        ],
+        "title": "IncidentIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "incident_id": {
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "fine_score": {
+            "title": "Fine Score",
+            "type": "integer"
+          },
+          "hosts_count": {
+            "title": "Hosts Count",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status",
+          "incident_id",
+          "state",
+          "fine_score",
+          "hosts_count",
+          "created"
+        ],
+        "title": "FalconIncident",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.get_incident",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "update_incident",
+      "description": "Update an Incident's status and/or add a tag/comment.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.incident.updated"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "incident_id": {
+            "description": "Falcon incident id.",
+            "title": "Incident Id",
+            "type": "string"
+          },
+          "status": {
+            "default": "",
+            "description": "New status: 'new', 'in_progress', 'closed', 'reopened'.",
+            "title": "Status",
+            "type": "string"
+          },
+          "add_tag": {
+            "default": "",
+            "description": "Optional tag to add.",
+            "title": "Add Tag",
+            "type": "string"
+          },
+          "add_comment": {
+            "default": "",
+            "description": "Optional comment to add.",
+            "title": "Add Comment",
+            "type": "string"
+          }
+        },
+        "required": [
+          "incident_id"
+        ],
+        "title": "UpdateIncidentParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.update_incident",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_iocs",
+      "description": "List custom IOCs (Indicators of Compromise) configured on the connected Falcon tenant.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "types": {
+            "default": "",
+            "description": "Optional comma-separated IOC types filter, e.g. 'sha256,domain'.",
+            "title": "Types",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max IOCs to return (1-500).",
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "ListIocsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "FalconIoc": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "title": "Description",
+                "type": "string"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "ioc_id": {
+                "title": "Ioc Id",
+                "type": "string"
+              },
+              "ioc_type": {
+                "title": "Ioc Type",
+                "type": "string"
+              },
+              "value": {
+                "title": "Value",
+                "type": "string"
+              },
+              "action": {
+                "title": "Action",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "description",
+              "ioc_id",
+              "ioc_type",
+              "value",
+              "action"
+            ],
+            "title": "FalconIoc",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "iocs": {
+            "items": {
+              "$ref": "#/$defs/FalconIoc"
+            },
+            "title": "Iocs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "iocs"
+        ],
+        "title": "IocList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_iocs",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "create_ioc",
+      "description": "Create a new custom IOC (hash/domain/IP) with a detect/prevent/allow action applied fleet-wide (or to selected platforms).",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.ioc.created"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "ioc_type": {
+            "description": "IOC type: 'sha256', 'md5', 'domain', 'ipv4', 'ipv6'.",
+            "title": "Ioc Type",
+            "type": "string"
+          },
+          "value": {
+            "description": "The indicator value itself (hash, domain, or IP).",
+            "title": "Value",
+            "type": "string"
+          },
+          "action": {
+            "default": "detect",
+            "description": "Action Falcon takes when this IOC is observed: 'detect', 'prevent', or 'allow'.",
+            "title": "Action",
+            "type": "string"
+          },
+          "description": {
+            "default": "",
+            "description": "Optional description of why this IOC was added.",
+            "title": "Description",
+            "type": "string"
+          },
+          "platforms": {
+            "description": "Platforms this IOC applies to, e.g. ['windows', 'mac', 'linux']. Empty = all.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Platforms",
+            "type": "array"
+          }
+        },
+        "required": [
+          "ioc_type",
+          "value"
+        ],
+        "title": "CreateIocParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ioc_id": {
+            "title": "Ioc Id",
+            "type": "string"
+          },
+          "ioc_type": {
+            "title": "Ioc Type",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "action": {
+            "title": "Action",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "ioc_id",
+          "ioc_type",
+          "value",
+          "action"
+        ],
+        "title": "FalconIoc",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.create_ioc",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "delete_ioc",
+      "description": "Permanently delete a custom IOC. Cannot be undone.",
+      "action_type": "destructive",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.ioc.deleted"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "ioc_id": {
+            "description": "Falcon custom IOC id.",
+            "title": "Ioc Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ioc_id"
+        ],
+        "title": "IocIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.delete_ioc",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_prevention_policies",
+      "description": "List Prevention Policies configured on the connected Falcon tenant, optionally filtered by an FQL expression.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ListPreventionPoliciesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "PreventionPolicy": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "policy_id": {
+                "title": "Policy Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "enabled": {
+                "title": "Enabled",
+                "type": "boolean"
+              },
+              "platform_name": {
+                "title": "Platform Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "policy_id",
+              "name",
+              "enabled",
+              "platform_name"
+            ],
+            "title": "PreventionPolicy",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "policies": {
+            "items": {
+              "$ref": "#/$defs/PreventionPolicy"
+            },
+            "title": "Policies",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "policies"
+        ],
+        "title": "PolicyList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_prevention_policies",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "get_prevention_policy",
+      "description": "Read one Prevention Policy in full by its id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "policy_id": {
+            "description": "Falcon Prevention Policy id.",
+            "title": "Policy Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "policy_id"
+        ],
+        "title": "PolicyIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "policy_id": {
+            "title": "Policy Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "platform_name": {
+            "title": "Platform Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "policy_id",
+          "name",
+          "enabled",
+          "platform_name"
+        ],
+        "title": "PreventionPolicy",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.get_prevention_policy",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "set_prevention_policy_enabled",
+      "description": "Enable or disable a Prevention Policy without deleting it.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.policy.updated"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "policy_id": {
+            "description": "Falcon Prevention Policy id.",
+            "title": "Policy Id",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "True to enable the Prevention Policy, False to disable it.",
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "policy_id",
+          "enabled"
+        ],
+        "title": "SetPreventionPolicyEnabledParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "ok",
+          "detail"
+        ],
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.set_prevention_policy_enabled",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "start_rtr_session",
+      "description": "Start a Real Time Response (RTR) session on a host, for live read-only investigation (ls, ps, netstat, etc. via run_rtr_command).",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.rtr.session_started"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "host_id": {
+            "description": "Falcon host id to start a Real Time Response session on.",
+            "title": "Host Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host_id"
+        ],
+        "title": "RtrSessionParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "host_id": {
+            "title": "Host Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status",
+          "session_id",
+          "host_id"
+        ],
+        "title": "RtrSession",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.start_rtr_session",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "run_rtr_command",
+      "description": "Run a read-only RTR command (e.g. 'ls', 'ps', 'netstat', 'ifconfig') in an active RTR session and return its output.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "crowdstrike.rtr.command_run"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "session_id": {
+            "description": "Active RTR session id from start_rtr_session.",
+            "title": "Session Id",
+            "type": "string"
+          },
+          "command": {
+            "description": "RTR command to run, e.g. 'ls', 'ps', 'ipconfig'.",
+            "title": "Command",
+            "type": "string"
+          },
+          "command_string": {
+            "default": "",
+            "description": "Full command string with arguments, e.g. 'ls C:\\\\Users'.",
+            "title": "Command String",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id",
+          "command"
+        ],
+        "title": "RtrCommandParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "command": {
+            "title": "Command",
+            "type": "string"
+          },
+          "stdout": {
+            "title": "Stdout",
+            "type": "string"
+          },
+          "stderr": {
+            "title": "Stderr",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "session_id",
+          "command",
+          "stdout",
+          "stderr"
+        ],
+        "title": "RtrCommandResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.run_rtr_command",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "list_vulnerabilities",
+      "description": "List Spotlight Vulnerabilities (CVE exposure) across the fleet, optionally filtered by an FQL expression (e.g. \"cve.severity:'CRITICAL'\").",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "filter_expr": {
+            "default": "",
+            "description": "Optional FQL filter, e.g. \"cve.severity:'CRITICAL'\".",
+            "title": "Filter Expr",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max vulnerabilities to return (1-500).",
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "ListVulnerabilitiesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Vulnerability": {
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "title": "Id"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "vuln_id": {
+                "title": "Vuln Id",
+                "type": "string"
+              },
+              "cve_id": {
+                "title": "Cve Id",
+                "type": "string"
+              },
+              "severity": {
+                "title": "Severity",
+                "type": "string"
+              },
+              "hostname": {
+                "title": "Hostname",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "status",
+              "vuln_id",
+              "cve_id",
+              "severity",
+              "hostname"
+            ],
+            "title": "Vulnerability",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "vulnerabilities": {
+            "items": {
+              "$ref": "#/$defs/Vulnerability"
+            },
+            "title": "Vulnerabilities",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "vulnerabilities"
+        ],
+        "title": "VulnerabilityList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.list_vulnerabilities",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    },
+    {
+      "name": "audit_falcon_estate",
+      "description": "Build one aggregated health report across the connected Falcon tenant: stale hosts, open critical incidents, new detections, and disabled prevention policies.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Optional saved Falcon tenant connection ID. Omit to use the first connected tenant.",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionRefParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "total_hosts": {
+            "title": "Total Hosts",
+            "type": "integer"
+          },
+          "stale_hosts_7d": {
+            "title": "Stale Hosts 7D",
+            "type": "integer"
+          },
+          "open_incidents_critical": {
+            "title": "Open Incidents Critical",
+            "type": "integer"
+          },
+          "open_detections_new": {
+            "title": "Open Detections New",
+            "type": "integer"
+          },
+          "disabled_prevention_policies": {
+            "title": "Disabled Prevention Policies",
+            "type": "integer"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "region",
+          "total_hosts",
+          "stale_hosts_7d",
+          "open_incidents_critical",
+          "open_detections_new",
+          "disabled_prevention_policies",
+          "notes"
+        ],
+        "title": "EstateAudit",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "crowdstrike-falcon-connector.audit_falcon_estate",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "crowdstrike_falcon"
+    }
+  ],
+  "signals": [],
+  "schedules": [],
+  "required_scopes": [],
+  "icon_size_bytes": 585,
+  "lifecycle": {
+    "health_check": {
+      "interval_sec": 60
+    }
+  },
+  "secrets": [
+    {
+      "name": "crowdstrike_connections",
+      "description": "JSON list of connected CrowdStrike Falcon tenants (region + encrypted OAuth2 client credentials). Managed only through connect_crowdstrike and disconnect_crowdstrike.",
+      "required": true,
+      "write_mode": "both",
+      "max_bytes": 65536,
+      "scope": "user",
+      "rotation_hint_days": 90
+    }
+  ],
+  "panels": [
+    {
+      "panel_id": "secrets",
+      "slot": "right",
+      "title": "Secrets",
+      "tree": {},
+      "icon": "KeyRound",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "crowdstrike_sidebar",
+      "slot": "left",
+      "title": "CrowdStrike Falcon",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "crowdstrike_connect_help",
+      "slot": "overlay",
+      "title": "Как создать API Client?",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "crowdstrike_center",
+      "slot": "center",
+      "title": "CrowdStrike Falcon",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "crowdstrike_incidents",
+      "slot": "center",
+      "title": "Incidents",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "crowdstrike_detections",
+      "slot": "center",
+      "title": "Detections",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "crowdstrike_hosts",
+      "slot": "center",
+      "title": "Hosts",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "crowdstrike_iocs",
+      "slot": "center",
+      "title": "Custom IOCs",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "crowdstrike_policies",
+      "slot": "center",
+      "title": "Prevention Policies",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "crowdstrike_settings",
+      "slot": "center",
+      "title": "CrowdStrike Falcon settings",
+      "tree": {},
+      "icon": "Settings",
+      "refresh": "manual",
+      "center_overlay": true
+    }
+  ]
+}
