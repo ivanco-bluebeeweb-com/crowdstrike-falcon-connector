@@ -64,23 +64,6 @@ async def crowdstrike_sidebar(ctx, **kwargs) -> ui.UINode:
     ])
 
 
-@ext.panel("crowdstrike_connect_help", slot="center", title="Подключение CrowdStrike Falcon", center_overlay=True)
-async def crowdstrike_connect_help(ctx, **kwargs) -> ui.UINode:
-    return ui.Stack(direction="v", gap=3, align="stretch", children=[
-        ui.Header(text="Как создать OAuth2 API Client", level=2),
-        ui.Markdown(text=(
-            "1. В Falcon Console перейдите в **Support and resources > API Clients and Keys**.\n"
-            "2. Нажмите **Add new API client**, дайте название.\n"
-            "3. Отметьте нужные scope: `Hosts: Read/Write`, `Detections: Read/Write`, "
-            "`Incidents: Read/Write`, `IOC: Read/Write`, `Prevention Policies: Read/Write`, "
-            "`Real Time Response (Admin): Read/Write`, `Spotlight Vulnerabilities: Read`.\n"
-            "4. Скопируйте **Client ID** и **Client Secret** (секрет показывается один раз).\n"
-            "5. Убедитесь, что выбран правильный регион облака (US-1/US-2/EU-1/US-GOV-1) — "
-            "он виден в адресной строке вашей Falcon Console."
-        )),
-    ])
-
-
 @ext.panel("crowdstrike_center", slot="center", title="CrowdStrike Falcon")
 async def crowdstrike_center(ctx, **kwargs) -> ui.UINode:
     return ui.Empty(message="Nothing to show here", icon="ShieldAlert")

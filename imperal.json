@@ -3975,15 +3975,6 @@
       "center_overlay": false
     },
     {
-      "panel_id": "crowdstrike_connect_help",
-      "slot": "overlay",
-      "title": "Как создать API Client?",
-      "tree": {},
-      "icon": "",
-      "refresh": "manual",
-      "center_overlay": false
-    },
-    {
       "panel_id": "crowdstrike_center",
       "slot": "center",
       "title": "CrowdStrike Falcon",
@@ -4036,6 +4027,15 @@
       "icon": "",
       "refresh": "manual",
       "center_overlay": true
+    },
+    {
+      "panel_id": "crowdstrike_connect_help",
+      "slot": "overlay",
+      "title": "Как создать API Client?",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
     },
     {
       "panel_id": "crowdstrike_settings",

@@ -11,8 +11,8 @@ import crowdstrike_client as cs
 
 def _sev_badge(sev: str) -> ui.UINode:
     s = (sev or "").lower()
-    variant = "error" if s in ("critical", "high") else ("warning" if s == "medium" else "default")
-    return ui.Badge(text=sev or "unknown", variant=variant)
+    color = "red" if s in ("critical", "high") else ("yellow" if s == "medium" else "gray")
+    return ui.Badge(label=sev or "unknown", color=color)
 
 
 @ext.panel("crowdstrike_incidents", slot="center", title="Incidents", center_overlay=True)
@@ -42,9 +42,9 @@ async def crowdstrike_incidents(ctx, **kwargs) -> ui.UINode:
         return ui.Alert(type="error", message=e.payload["error"])
     return ui.Stack(direction="v", gap=3, align="stretch", children=[
         ui.Header(text="Incidents", level=2),
-        ui.Stats(items=[
-            {"label": "Открытых", "value": str(len([r for r in rows if r["state"] == "open"]))},
-            {"label": "Всего", "value": str(len(rows))},
+        ui.Stats(children=[
+            ui.Stat(label="Открытых", value=str(len([r for r in rows if r["state"] == "open"]))),
+            ui.Stat(label="Всего", value=str(len(rows))),
         ]),
         ui.DataTable(
             rows=rows,
@@ -197,7 +197,7 @@ async def crowdstrike_policies(ctx, **kwargs) -> ui.UINode:
 
 @ext.panel("crowdstrike_connect_help", slot="overlay", title="Как создать API Client?")
 async def crowdstrike_connect_help(ctx, **kwargs) -> ui.UINode:
-    return ui.Markdown(text=(
+    return ui.Markdown(content=(
         "**Falcon Console > Support and resources > API Clients and Keys > "
         "Create API client**\n\n"
         "Рекомендуемые scope под функции этого приложения:\n"
