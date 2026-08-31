@@ -114,6 +114,8 @@ class ListVulnerabilitiesParams(ConnectionRefParams):
 # ---- SDL entities ----
 
 class CrowdstrikeConnection(sdl.Entity):
+    id: str = ""
+    title: str = ""
     connection_id: str
     label: str
     region: str
@@ -121,10 +123,14 @@ class CrowdstrikeConnection(sdl.Entity):
 
 
 class ConnectionList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     connections: list[CrowdstrikeConnection]
 
 
 class FalconHost(sdl.Entity):
+    id: str = ""
+    title: str = ""
     host_id: str
     hostname: str
     platform_name: str
@@ -134,10 +140,14 @@ class FalconHost(sdl.Entity):
 
 
 class HostList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     hosts: list[FalconHost]
 
 
 class FalconDetection(sdl.Entity):
+    id: str = ""
+    title: str = ""
     detection_id: str
     hostname: str
     severity: str
@@ -148,10 +158,14 @@ class FalconDetection(sdl.Entity):
 
 
 class DetectionList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     detections: list[FalconDetection]
 
 
 class FalconIncident(sdl.Entity):
+    id: str = ""
+    title: str = ""
     incident_id: str
     state: str
     status: str
@@ -161,10 +175,14 @@ class FalconIncident(sdl.Entity):
 
 
 class IncidentList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     incidents: list[FalconIncident]
 
 
 class FalconIoc(sdl.Entity):
+    id: str = ""
+    title: str = ""
     ioc_id: str
     ioc_type: str
     value: str
@@ -173,10 +191,14 @@ class FalconIoc(sdl.Entity):
 
 
 class IocList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     iocs: list[FalconIoc]
 
 
 class PreventionPolicy(sdl.Entity):
+    id: str = ""
+    title: str = ""
     policy_id: str
     name: str
     enabled: bool
@@ -184,16 +206,22 @@ class PreventionPolicy(sdl.Entity):
 
 
 class PolicyList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     policies: list[PreventionPolicy]
 
 
 class RtrSession(sdl.Entity):
+    id: str = ""
+    title: str = ""
     session_id: str
     host_id: str
     status: str
 
 
 class RtrCommandResult(sdl.Entity):
+    id: str = ""
+    title: str = ""
     session_id: str
     command: str
     stdout: str
@@ -201,6 +229,8 @@ class RtrCommandResult(sdl.Entity):
 
 
 class Vulnerability(sdl.Entity):
+    id: str = ""
+    title: str = ""
     vuln_id: str
     cve_id: str
     severity: str
@@ -209,10 +239,14 @@ class Vulnerability(sdl.Entity):
 
 
 class VulnerabilityList(sdl.Entity):
+    id: str = ""
+    title: str = ""
     vulnerabilities: list[Vulnerability]
 
 
 class EstateAudit(sdl.Entity):
+    id: str = ""
+    title: str = ""
     region: str
     total_hosts: int
     stale_hosts_7d: int
@@ -223,5 +257,7 @@ class EstateAudit(sdl.Entity):
 
 
 class DeleteResult(sdl.Entity):
+    id: str = ""
+    title: str = ""
     ok: bool
     detail: str
