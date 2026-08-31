@@ -127,4 +127,4 @@ async def list_connections(ctx, params: NoParams) -> ActionResult:
         )
         for c in conns
     ]
-    return ActionResult.success(data=ConnectionList(connections=items))
+    return ActionResult.success(data=ConnectionList(connections=items), summary="Connections listed.")
