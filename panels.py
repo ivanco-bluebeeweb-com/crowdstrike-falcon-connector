@@ -30,8 +30,7 @@ def _field(label: str, node: ui.UINode) -> ui.UINode:
 
 def _settings_button() -> ui.UINode:
     return ui.Button(
-        "App settings", variant="secondary", size="sm", full_width=True,
-        icon="Settings", on_click=ui.Call("__panel__crowdstrike_settings"),
+        "App settings", variant="secondary", size="sm", icon="Settings", on_click=ui.Call("__panel__crowdstrike_settings"),
     )
 
 
@@ -53,12 +52,12 @@ async def crowdstrike_sidebar(ctx, **kwargs) -> ui.UINode:
     return ui.Stack(direction="v", gap=1, align="stretch", children=[
         ui.Text(f"{c.get('label') or c.get('region', '')}", variant="subtitle"),
         ui.Divider(),
-        ui.Button("Incidents", variant="ghost", full_width=True, icon="ShieldAlert", on_click=ui.Call("__panel__crowdstrike_incidents")),
-        ui.Button("Detections", variant="ghost", full_width=True, icon="Eye", on_click=ui.Call("__panel__crowdstrike_detections")),
-        ui.Button("Hosts", variant="ghost", full_width=True, icon="Monitor", on_click=ui.Call("__panel__crowdstrike_hosts")),
-        ui.Button("IOCs", variant="ghost", full_width=True, icon="Fingerprint", on_click=ui.Call("__panel__crowdstrike_iocs")),
-        ui.Button("Prevention Policies", variant="ghost", full_width=True, icon="ShieldCheck", on_click=ui.Call("__panel__crowdstrike_policies")),
-        ui.Button("Vulnerabilities", variant="ghost", full_width=True, icon="Bug", on_click=ui.Call("__panel__crowdstrike_vulns")),
+        ui.Button("Incidents", variant="ghost", icon="ShieldAlert", on_click=ui.Call("__panel__crowdstrike_incidents")),
+        ui.Button("Detections", variant="ghost", icon="Eye", on_click=ui.Call("__panel__crowdstrike_detections")),
+        ui.Button("Hosts", variant="ghost", icon="Monitor", on_click=ui.Call("__panel__crowdstrike_hosts")),
+        ui.Button("IOCs", variant="ghost", icon="Fingerprint", on_click=ui.Call("__panel__crowdstrike_iocs")),
+        ui.Button("Prevention Policies", variant="ghost", icon="ShieldCheck", on_click=ui.Call("__panel__crowdstrike_policies")),
+        ui.Button("Vulnerabilities", variant="ghost", icon="Bug", on_click=ui.Call("__panel__crowdstrike_vulns")),
         ui.Divider(),
         _settings_button(),
     ])
